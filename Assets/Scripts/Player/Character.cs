@@ -79,5 +79,6 @@ public class Character : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        UIController.Instance.UpdateHealthUI();
     }
 }

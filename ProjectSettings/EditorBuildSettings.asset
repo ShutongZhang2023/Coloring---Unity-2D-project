@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Persistent.unity
+    guid: 55e009875e525c34d8faa4fcbcd67f08
+  - enabled: 1
+    path: Assets/Scenes/ColorTest.unity
+    guid: 290259628ef47a74b8840bc7269c37ce
+  - enabled: 1
+    path: Assets/Scenes/BlueMap.unity
+    guid: 629baddf1a67dbb488b623197e9de3c8
   m_configObjects: {}

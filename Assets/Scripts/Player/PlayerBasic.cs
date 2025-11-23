@@ -67,6 +67,8 @@ public class PlayerBasic : MonoBehaviour
     private GameObject currentIceBlock;
     public GameObject iceRangeCircle;
 
+    [SerializeField] private Vector3 savePosition;
+
     private void Awake()
     {
         Instance = this;
@@ -97,6 +99,7 @@ public class PlayerBasic : MonoBehaviour
     {
         inkPainter = GetComponent<InkPainter>();
         SetColorRed(new InputAction.CallbackContext()); // 初始化颜色为红色
+        savePosition = transform.position;
     }
 
     private void OnEnable()
@@ -213,8 +216,23 @@ public class PlayerBasic : MonoBehaviour
     public void Die()
     {
         inputControl.GamePlay.Disable();
-        animator.SetBool("isDead", true);
+        animator.SetTrigger("Die");
+        StartCoroutine(reborn());
     }
+
+    private IEnumerator reborn() { 
+        yield return new WaitForSeconds(1.1f);
+        transform.position = savePosition;
+
+        character.Heal(character.maxHealth);
+        character.isDead = false;
+
+        animator.ResetTrigger("Die");
+        //animator.SetBool("isDead", false)
+        inputControl.GamePlay.Enable();
+    }
+
+
 
     private IEnumerator DelayedReturn()
     {
@@ -225,6 +243,10 @@ public class PlayerBasic : MonoBehaviour
         yield return new WaitForSeconds(1f);
         inputControl.GamePlay.Enable();
         // vision
+    }
+
+    public void SaveGame() {
+        savePosition = transform.position;
     }
 
     public void ReturnToSafePosition()
@@ -394,15 +416,18 @@ public class PlayerBasic : MonoBehaviour
             isInGravityZone = true;
         }
 
+        if (collision.CompareTag("Ladder"))
+        {
+            isLadder = true;
+            rb.gravityScale = 0f;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
         if (collision.CompareTag("Spike") || collision.CompareTag("Water"))
         {
             inDanger = true;
-        }
-
-        if (collision.CompareTag("Ladder"))
-        { 
-            isLadder = true;
-            rb.gravityScale = 0f;
         }
     }
 
